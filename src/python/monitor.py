@@ -33,6 +33,7 @@ class my_top_block(gr.top_block):
 			inf_str = args[0]
 
 		demod = gr_quadrature_demod_cf(1.0);
+		squelch = gr_pwr_squelch_cc()
 
 		if inf_str is not None:
 			print "Reading from: " + inf_str
@@ -50,7 +51,7 @@ class my_top_block(gr.top_block):
 			frequency = freqs[options.channel]
 			print "Channel: " + options.channel + " (" + str(frequency/1e6) + "MHz)"
 
-			u = usrp.source_c(64) #temporary
+			u = usrp.source_c(128) #500k Samp/sec
 			subdev = usrp.selected_subdev(u, options.rx_subdev_spec)
 			print "Using RX board %s" % (subdev.side_and_name())
 			r = src.tune(0, subdev, frequency)
@@ -63,7 +64,7 @@ class my_top_block(gr.top_block):
 			subdev.set_gain(options.gain)
 			print "Gain: " + float(options.gain) + "dB"
 
-			self.connect(u, qdemod)
+			self.connect(u, demod)
 
 
 

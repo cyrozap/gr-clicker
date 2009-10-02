@@ -21,44 +21,20 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_CLICKER_PACKET_H
-#define INCLUDED_CLICKER_PACKET_H
+#include "clicker_packet.h"
 
-class clicker_packet;
-typedef boost::shared_ptr<clicker_packet> clicker_packet_sptr; 
-
-clicker_packet_sptr clicker_make_packet(char *stream, int length);
-
-class clicker_packet
-{
-
-private:
-
-	friend clicker_packet_sptr clicker_make_packet(char *stream);
-
-	// private constructor
-	clicker_packet(char *stream, int length)
-
-	char d_response_code;
-	char d_id[4];
-
-public:
-
-	// hex representation of clicker response codes.
-	// there's no apparent rhyme or reason to it.
-	static const char A = 0x01;
-	static const char B = 0x05;
-	static const char C = 0x0D;
-	static const char D = 0x0E;
-	static const char E = 0x0A;
-
-	char get_response_code() { return d_response_code };
-	char[] get_id() { return d_id };
-
-	void print();	
-
-	~clicker_packet();
-
+clicker_packet_sptr clicker_make_packet(char* stream, int length) {
+	return new clicker_packet(stream, length);
 }
 
-#endif /* INCLUDED_CLICKER_PACKET_H */
+clicker_packet::clicker_packet(char* stream, int length) {
+	d_response_code = stream[31]<<3 + stream[32]<<2 + stream[33]<<1 + stream[34];
+	for (int i = 0; i < 4; i++) {
+		d_id[i] = stream[i*8]<<7 + stream[i*8+1]<<6 + stream[i*8+2]<<5 + stream[i*8+3] << 4
+			+ stream[i*8+4]<<3 + stream[i*8+5]<<2 + stream[i*8+6]<<1 + stream[i*8+7];
+	}
+}
+
+clicker_packer::~clicker_packet() {
+
+}
