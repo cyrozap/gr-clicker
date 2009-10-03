@@ -24,20 +24,28 @@
 #ifndef INCLUDED_CLICKER_PACKET_H
 #define INCLUDED_CLICKER_PACKET_H
 
+#include <cstdio>
+#include <boost/enable_shared_from_this.hpp>
+
+using namespace std;
+
+
 class clicker_packet;
 typedef boost::shared_ptr<clicker_packet> clicker_packet_sptr; 
 
 clicker_packet_sptr clicker_make_packet(char *stream, int length);
+
 
 class clicker_packet
 {
 
 private:
 
-	friend clicker_packet_sptr clicker_make_packet(char *stream);
+	friend clicker_packet_sptr clicker_make_packet(char *stream, int length);
+
 
 	// private constructor
-	clicker_packet(char *stream, int length)
+	clicker_packet(char *stream, int length);
 
 	char d_response_code;
 	char d_id[4];
@@ -52,13 +60,13 @@ public:
 	static const char D = 0x0E;
 	static const char E = 0x0A;
 
-	char get_response_code() { return d_response_code };
-	char[] get_id() { return d_id };
+	char get_response_code() { return d_response_code; };
+	char* get_id() { return d_id; };
 
 	void print();	
 
 	~clicker_packet();
 
-}
+};
 
 #endif /* INCLUDED_CLICKER_PACKET_H */

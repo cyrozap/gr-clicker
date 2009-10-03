@@ -25,30 +25,30 @@
 #include "config.h"
 #endif
 
+#include <gr_io_signature.h>
+#include "clicker_sniffer.h"
 #include "clicker_packet.h"
 
-clicker_packet_sptr
-clicker_make_packet(char *stream, int length)
+clicker_sniffer_sptr clicker_make_sniffer()
 {
-	return clicker_packet_sptr (new clicker_packet (stream, length));
+	return clicker_sniffer_sptr(new clicker_sniffer());
 }
 
-
-clicker_packet::clicker_packet(char* stream, int length)
+clicker_sniffer::clicker_sniffer() : gr_sync_block ("clicker block",
+	      gr_make_io_signature (1, 1, sizeof(char)),
+	      gr_make_io_signature (0, 0, 0))
 {
-	//d_response_code = (stream[31]<<3) + (stream[32]<<2) + (stream[33]<<1) + (stream[34]);
-	//for (int i = 0; i < 4; i++) {
-		//d_id[i] = (stream[i*8]<<7) + (stream[i*8+1]<<6) + (stream[i*8+2]<<5) + (stream[i*8+3] << 4)
-		//	+ (stream[i*8+4]<<3) + (stream[i*8+5]<<2) + (stream[i*8+6]<<1) + (stream[i*8+7]);
-	//}
-	//printf("Clicker Packet: %x\n", d_response_code);
+	printf("clicker_sniffer constructed");
 }
 
-void clicker_packet::print()
+clicker_sniffer::~clicker_sniffer()
 {
-	//printf("Clicker Packet: %x\n", d_response_code);
+
 }
 
-clicker_packet::~clicker_packet() {
-
+int clicker_sniffer::work(int noutput_items,
+		gr_vector_const_void_star &input_items,
+		gr_vector_void_star &output_items)
+{
+	return 1;
 }

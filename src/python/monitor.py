@@ -8,6 +8,8 @@ from gnuradio import gr, eng_notation, blks2, usrp
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 
+AC = [1,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0]
+
 class my_top_block(gr.top_block):
 
 	def __init__(self):
@@ -32,14 +34,15 @@ class my_top_block(gr.top_block):
 		if len(args) != 0:
 			inf_str = args[0]
 
-		demod = gr_quadrature_demod_cf(1.0);
-		squelch = gr_pwr_squelch_cc()
+		squelch = gr_pwr_squelch_cc(70, 0.1, 0, True)
+		demod = gr_quadrature_demod_cf(1.0)
+		cr = gr_clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
+		slicer = gr_binary_slicer_fb()
+		corr = gr_correlate_access_code_bb(AC, 0)
 
 		if inf_str is not None:
 			print "Reading from: " + inf_str
-			inf = gr.file_source(inf_str, sizeof_gr_complex, False)
-
-			self.connect(inf, qdemod)
+			src = gr.file_source(inf_str, sizeof_gr_complex, False)
 		
 		else:
 			freqs = {
@@ -51,7 +54,7 @@ class my_top_block(gr.top_block):
 			frequency = freqs[options.channel]
 			print "Channel: " + options.channel + " (" + str(frequency/1e6) + "MHz)"
 
-			u = usrp.source_c(128) #500k Samp/sec
+			src = usrp.source_c(128) #500k Samp/sec
 			subdev = usrp.selected_subdev(u, options.rx_subdev_spec)
 			print "Using RX board %s" % (subdev.side_and_name())
 			r = src.tune(0, subdev, frequency)
@@ -64,7 +67,7 @@ class my_top_block(gr.top_block):
 			subdev.set_gain(options.gain)
 			print "Gain: " + float(options.gain) + "dB"
 
-			self.connect(u, demod)
+		self.connect(src, squelch, demod, cr, slicer, corr)
 
 
 

@@ -25,10 +25,9 @@
 include $(top_srcdir)/Makefile.common
 
 
-EXTRA_DIST = btrx.py multibtrx.py
+EXTRA_DIST = monitor.py
 
 bin_SCRIPTS =                \
-        btrx.py			\
-	multibtrx.py
+        monitor.py			
 
 CLEANFILES = *.pyc

@@ -60,22 +60,8 @@ ourlib_LTLIBRARIES = _clicker.la
 
 # These are the source files that go into the shared library
 _clicker_la_SOURCES = 		\
-	bluetooth.cc			\
-	bluetooth_piconet.cc		\
-	bluetooth_packet.cc		\
-	bluetooth_LAP.cc		\
-	bluetooth_UAP.cc		\
-	bluetooth_hopper.cc		\
-	bluetooth_block.cc		\
-	bluetooth_multi_block.cc	\
-	bluetooth_multi_LAP.cc		\
-	bluetooth_multi_UAP.cc		\
-	bluetooth_multi_hopper.cc	\
-	bluetooth_multi_sniffer.cc	\
-	bluetooth_sniffer.cc		\
-	bluetooth_tun.cc		\
-	tun.cc				\
-	#bluetooth_bluecore_source.cc
+	clicker_packet.cc		\
+	clicker_sniffer.cc		
 
 # magic flags
 _clicker_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -91,21 +77,8 @@ clicker.cc clicker.py: $(LOCAL_IFILES) $(ALL_IFILES)
 
 # These headers get installed in ${prefix}/include/gnuradio
 grinclude_HEADERS =			\
-	bluetooth_piconet.h		\
-	bluetooth_packet.h		\
-	bluetooth_LAP.h			\
-	bluetooth_UAP.h			\
-	bluetooth_hopper.h		\
-	bluetooth_block.h		\
-	bluetooth_multi_block.h		\
-	bluetooth_multi_LAP.h		\
-	bluetooth_multi_UAP.h		\
-	bluetooth_multi_hopper.h	\
-	bluetooth_multi_sniffer.h	\
-	bluetooth_sniffer.h		\
-	bluetooth_tun.h			\
-	tun.h				\
-	#bluetooth_bluecore_source.h
+	clicker_packet.h		\
+	clicker_sniffer.h		
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig
