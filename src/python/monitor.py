@@ -42,7 +42,7 @@ class my_top_block(gr.top_block):
 
 		if inf_str is not None:
 			print "Reading from: " + inf_str
-			src = gr.file_source(inf_str, sizeof_gr_complex, False)
+			src = gr.file_source(gr.sizeof_gr_complex, inf_str, False)
 		
 		else:
 			freqs = {
