@@ -39,6 +39,7 @@ class my_top_block(gr.top_block):
 		cr = gr.clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
 		slicer = gr.binary_slicer_fb()
 		corr = gr.correlate_access_code_bb(AC, 0)
+		sink = gr.null_sink(gr.sizeof_char)
 
 		if inf_str is not None:
 			print "Reading from: " + inf_str
@@ -67,7 +68,7 @@ class my_top_block(gr.top_block):
 			subdev.set_gain(options.gain)
 			print "Gain: " + float(options.gain) + "dB"
 
-		self.connect(src, squelch, demod, cr, slicer, corr)
+		self.connect(src, squelch, demod, cr, slicer, corr, sink)
 
 
 
