@@ -60,6 +60,7 @@ ourlib_LTLIBRARIES = _clicker.la
 
 # These are the source files that go into the shared library
 _clicker_la_SOURCES = 		\
+	clicker.cc				\
 	clicker_packet.cc		\
 	clicker_sniffer.cc		
 

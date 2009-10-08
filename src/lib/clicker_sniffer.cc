@@ -25,10 +25,8 @@
 #include "config.h"
 #endif
 
-#include <gr_sync_block.h>
 #include <gr_io_signature.h>
 #include "clicker_sniffer.h"
-#include "clicker_packet.h"
 
 clicker_sniffer_sptr clicker_make_sniffer()
 {

@@ -24,7 +24,7 @@
 #ifndef INCLUDED_CLICKER_SNIFFER_H
 #define INCLUDED_CLICKER_SNIFFER_H
 
-#include <boost/enable_shared_from_this.hpp>
+#include <gr_sync_block.h>
 
 class clicker_sniffer;
 typedef boost::shared_ptr<clicker_sniffer> clicker_sniffer_sptr;
