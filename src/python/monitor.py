@@ -8,7 +8,7 @@ from gnuradio import gr, eng_notation, blks2, usrp
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 
-AC = [1,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0]
+AC = "101100001011000010110000"
 
 class my_top_block(gr.top_block):
 
@@ -34,11 +34,11 @@ class my_top_block(gr.top_block):
 		if len(args) != 0:
 			inf_str = args[0]
 
-		squelch = gr_pwr_squelch_cc(70, 0.1, 0, True)
-		demod = gr_quadrature_demod_cf(1.0)
-		cr = gr_clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
-		slicer = gr_binary_slicer_fb()
-		corr = gr_correlate_access_code_bb(AC, 0)
+		squelch = gr.pwr_squelch_cc(70, 0.1, 0, True)
+		demod = gr.quadrature_demod_cf(1.0)
+		cr = gr.clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
+		slicer = gr.binary_slicer_fb()
+		corr = gr.correlate_access_code_bb(AC, 0)
 
 		if inf_str is not None:
 			print "Reading from: " + inf_str
