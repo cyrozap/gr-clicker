@@ -29,6 +29,8 @@
 class clicker_sniffer;
 typedef boost::shared_ptr<clicker_sniffer> clicker_sniffer_sptr;
 
+clicker_sniffer_sptr clicker_make_sniffer();
+
 class clicker_sniffer : public gr_sync_block
 {
 
