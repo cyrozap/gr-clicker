@@ -1,15 +1,15 @@
 /* -*- c++ -*- */
 
-%feature("autodoc", "1");		// generate python docstrings
+//%feature("autodoc", "1");		// generate python docstrings
 
-%include "exception.i"
-%import "gnuradio.i"			// the common stuff
+//%include "exception.i"
+%include "gnuradio.i"			// the common stuff
 
 %{
-#pragma GCC diagnostic ignored "-Wuninitialized"
-#include "gnuradio_swig_bug_workaround.h"	// mandatory bug fix
+//#pragma GCC diagnostic ignored "-Wuninitialized"
+//#include "gnuradio_swig_bug_workaround.h"	// mandatory bug fix
 #include "clicker_sniffer.h"
-#include <stdexcept>
+//#include <stdexcept>
 %}
 
 // ----------------------------------------------------------------

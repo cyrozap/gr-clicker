@@ -86,7 +86,6 @@ grinclude_HEADERS =			\
 swiginclude_HEADERS = 			\
 	$(LOCAL_IFILES)
 
-
 MOSTLYCLEANFILES = $(BUILT_SOURCES) *.pyc
 
 # Don't distribute output of swig

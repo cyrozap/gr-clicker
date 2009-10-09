@@ -37,7 +37,7 @@ clicker_sniffer::clicker_sniffer() : gr_sync_block ("clicker block",
 	      gr_make_io_signature (1, 1, sizeof(char)),
 	      gr_make_io_signature (0, 0, 0))
 {
-	printf("clicker_sniffer constructed");
+	
 }
 
 clicker_sniffer::~clicker_sniffer()
@@ -49,5 +49,15 @@ int clicker_sniffer::work(int noutput_items,
 		gr_vector_const_void_star &input_items,
 		gr_vector_void_star &output_items)
 {
+	const char *in = (const char *) input_items[0];
+	char *out = (char *) output_items[0];
+	//for (int i = 0; i < noutput_items; i++){
+	//	out[i] = in[i] * in[i];
+	//}
+
+	if (in[0] & (char)0x02)
+	{
+		printf("packet detected\n");
+	}
 	return 1;
 }

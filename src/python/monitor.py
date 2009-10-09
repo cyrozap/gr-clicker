@@ -4,7 +4,7 @@
 
 from gnuradio import gr, eng_notation, blks2, usrp
 
-#from gnuradio import clicker
+from gnuradio import clicker
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 
@@ -39,7 +39,7 @@ class my_top_block(gr.top_block):
 		cr = gr.clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
 		slicer = gr.binary_slicer_fb()
 		corr = gr.correlate_access_code_bb(AC, 0)
-		sink = gr.null_sink(gr.sizeof_char)
+		sink = clicker.sniffer()
 
 		if inf_str is not None:
 			print "Reading from: " + inf_str
