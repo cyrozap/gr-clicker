@@ -10,6 +10,7 @@ from optparse import OptionParser
 
 AC = "101100001011000010110000"
 
+
 class my_top_block(gr.top_block):
 
 	def __init__(self):
@@ -29,14 +30,17 @@ class my_top_block(gr.top_block):
 		(options, args) = parser.parse_args ()
 
 		inf_str = None
+		decim = 64 #500k Samp/sec
 		symbol_rate = 152.34e3
+		sample_rate = 64e6/decim
 		
 		if len(args) != 0:
 			inf_str = args[0]
 
 		squelch = gr.pwr_squelch_cc(70, 0.1, 0, True)
 		demod = gr.quadrature_demod_cf(1.0)
-		cr = gr.clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
+		#cr = gr.clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
+		cr = gr.clock_recovery_mm_ff(sample_rate/symbol_rate, 0.00765625, 0, 0.175, 0.005)
 		slicer = gr.binary_slicer_fb()
 		corr = gr.correlate_access_code_bb(AC, 0)
 		sink = clicker.sniffer()
@@ -44,6 +48,7 @@ class my_top_block(gr.top_block):
 		if inf_str is not None:
 			print "Reading from: " + inf_str
 			src = gr.file_source(gr.sizeof_gr_complex, inf_str, False)
+			throttle = gr.throttle(gr.sizeof_gr_complex,1e6)
 		
 		else:
 			freqs = {
@@ -55,8 +60,8 @@ class my_top_block(gr.top_block):
 			frequency = freqs[options.channel]
 			print "Channel: " + options.channel + " (" + str(frequency/1e6) + "MHz)"
 
-			src = usrp.source_c(128) #500k Samp/sec
-			subdev = usrp.selected_subdev(u, options.rx_subdev_spec)
+			src = usrp.source_c(decim_rate=decim)
+			subdev = usrp.selected_subdev(src, options.rx_subdev_spec)
 			print "Using RX board %s" % (subdev.side_and_name())
 			r = src.tune(0, subdev, frequency)
 			if not r:
@@ -66,7 +71,7 @@ class my_top_block(gr.top_block):
 				g = subdev.gain_range()
 				options.gain = float(g[0]+g[1])/2
 			subdev.set_gain(options.gain)
-			print "Gain: " + float(options.gain) + "dB"
+			print "Gain: " + str(options.gain) + "dB"
 
 		self.connect(src, squelch, demod, cr, slicer, corr, sink)
 

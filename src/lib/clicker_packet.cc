@@ -36,12 +36,20 @@ clicker_make_packet(char *stream, int length)
 
 clicker_packet::clicker_packet(char* stream, int length)
 {
-	//d_response_code = (stream[31]<<3) + (stream[32]<<2) + (stream[33]<<1) + (stream[34]);
-	//for (int i = 0; i < 4; i++) {
-		//d_id[i] = (stream[i*8]<<7) + (stream[i*8+1]<<6) + (stream[i*8+2]<<5) + (stream[i*8+3] << 4)
-		//	+ (stream[i*8+4]<<3) + (stream[i*8+5]<<2) + (stream[i*8+6]<<1) + (stream[i*8+7]);
-	//}
-	//printf("Clicker Packet: %x\n", d_response_code);
+	char code = (stream[31]<<3) + (stream[32]<<2) + (stream[33]<<1) + (stream[34]);
+	switch (code)
+	{
+		case 0x01: d_response_code = 'A'; break;
+		case 0x05: d_response_code = 'B'; break;
+		case 0x0D: d_response_code = 'C'; break;
+		case 0x0E: d_response_code = 'D'; break;
+		case 0x0A: d_response_code = 'E'; break;
+	}
+	for (int i = 0; i < 4; i++) {
+		d_id[i] = (stream[i*8]<<7) + (stream[i*8+1]<<6) + (stream[i*8+2]<<5) + (stream[i*8+3] << 4)
+			+ (stream[i*8+4]<<3) + (stream[i*8+5]<<2) + (stream[i*8+6]<<1) + (stream[i*8+7]);
+	}
+	printf("Clicker Packet: %c\n", d_response_code);
 }
 
 void clicker_packet::print()

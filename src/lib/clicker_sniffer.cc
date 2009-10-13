@@ -26,6 +26,7 @@
 #endif
 
 #include <gr_io_signature.h>
+#include "clicker_packet.h"
 #include "clicker_sniffer.h"
 
 clicker_sniffer_sptr clicker_make_sniffer()
@@ -33,11 +34,11 @@ clicker_sniffer_sptr clicker_make_sniffer()
 	return clicker_sniffer_sptr(new clicker_sniffer());
 }
 
-clicker_sniffer::clicker_sniffer() : gr_sync_block ("clicker block",
+clicker_sniffer::clicker_sniffer() : gr_sync_block ("clicker_sniffer",
 	      gr_make_io_signature (1, 1, sizeof(char)),
 	      gr_make_io_signature (0, 0, 0))
 {
-	
+	set_history(43);
 }
 
 clicker_sniffer::~clicker_sniffer()
@@ -49,7 +50,8 @@ int clicker_sniffer::work(int noutput_items,
 		gr_vector_const_void_star &input_items,
 		gr_vector_void_star &output_items)
 {
-	const char *in = (const char *) input_items[0];
+	//const char *in = (const char *) input_items[0];
+	char* in = (char*) input_items[0];
 	char *out = (char *) output_items[0];
 	//for (int i = 0; i < noutput_items; i++){
 	//	out[i] = in[i] * in[i];
@@ -57,7 +59,8 @@ int clicker_sniffer::work(int noutput_items,
 
 	if (in[0] & (char)0x02)
 	{
-		printf("packet detected\n");
+		clicker_make_packet(in, 43);
+		return 43;
 	}
 	return 1;
 }
