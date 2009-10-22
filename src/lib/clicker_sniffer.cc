@@ -59,8 +59,24 @@ int clicker_sniffer::work(int noutput_items,
 
 	if (in[0] & (char)0x02)
 	{
-		clicker_make_packet(in, 43);
+		clicker_packet* packet = clicker_make_packet(in, 43);
+		search_reponses(packet);
 		return 43;
 	}
 	return 1;
+}
+
+int clicker_sniffer::search_responses(clicker_packet* packet)
+{
+	list<clicker_packet>::iterator i;
+	for(i=responses.begin(); i != responses.end(); ++i)
+	{
+		// need to implement compare_ids
+		if(clicker_packet.compare_ids(packet->get_id(), i.get_id()))
+		{
+			i.set_response_code(packet->get_id());
+			return 1;
+		}
+	}
+	return 0;
 }

@@ -9,6 +9,7 @@ from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 
 AC = "101100001011000010110000"
+#AC = "1"
 
 
 class my_top_block(gr.top_block):
@@ -30,7 +31,7 @@ class my_top_block(gr.top_block):
 		(options, args) = parser.parse_args ()
 
 		inf_str = None
-		decim = 64 #500k Samp/sec
+		decim = 64 #1M Samp/sec
 		symbol_rate = 152.34e3
 		sample_rate = 64e6/decim
 		
@@ -48,7 +49,6 @@ class my_top_block(gr.top_block):
 		if inf_str is not None:
 			print "Reading from: " + inf_str
 			src = gr.file_source(gr.sizeof_gr_complex, inf_str, False)
-			throttle = gr.throttle(gr.sizeof_gr_complex,1e6)
 		
 		else:
 			freqs = {

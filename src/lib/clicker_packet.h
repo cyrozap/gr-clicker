@@ -63,6 +63,8 @@ public:
 	char get_response_code() { return d_response_code; };
 	char* get_id() { return d_id; };
 
+	void set_response_code(char response_code) { d_response_code = response_code; };
+
 	void print();	
 
 	~clicker_packet();

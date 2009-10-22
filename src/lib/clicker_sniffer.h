@@ -24,7 +24,9 @@
 #ifndef INCLUDED_CLICKER_SNIFFER_H
 #define INCLUDED_CLICKER_SNIFFER_H
 
+#include <list>
 #include <gr_sync_block.h>
+include "clicker_packet.h"
 
 class clicker_sniffer;
 typedef boost::shared_ptr<clicker_sniffer> clicker_sniffer_sptr;
@@ -40,11 +42,15 @@ private:
 
 	clicker_sniffer();
 
+	list<clicker_packet> d_responses;
+
 public:
 
 	int work (int noutput_items,
 		    gr_vector_const_void_star &input_items,
 		    gr_vector_void_star &output_items);
+
+	int search_responses(clicker_packet* packet);
 
 	~clicker_sniffer();
 
