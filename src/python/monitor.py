@@ -17,7 +17,7 @@ class my_top_block(gr.top_block):
 	def __init__(self):
 		gr.top_block.__init__(self)
 
-		usage="%prog: [options]"
+		usage="%prog: [options] [input file]"
 		parser = OptionParser(option_class=eng_option, usage=usage)
 		parser.add_option("-c", "--channel", type="string", default='AA',
 								help="two-letter channel code (default: AA)")
