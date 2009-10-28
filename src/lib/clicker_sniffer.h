@@ -26,7 +26,7 @@
 
 #include <list>
 #include <gr_sync_block.h>
-include "clicker_packet.h"
+#include "clicker_packet.h"
 
 class clicker_sniffer;
 typedef boost::shared_ptr<clicker_sniffer> clicker_sniffer_sptr;
