@@ -50,7 +50,7 @@ public:
 		    gr_vector_const_void_star &input_items,
 		    gr_vector_void_star &output_items);
 
-	int search_responses(clicker_packet* packet);
+	int search_responses(clicker_packet_sptr packet);
 
 	~clicker_sniffer();
 

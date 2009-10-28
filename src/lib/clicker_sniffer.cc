@@ -59,14 +59,14 @@ int clicker_sniffer::work(int noutput_items,
 
 	if (in[0] & (char)0x02)
 	{
-		clicker_packet* packet = clicker_make_packet(in, 43);
-		search_reponses(packet);
+		clicker_packet_sptr packet = clicker_make_packet(in, 43);
+		search_responses(packet);
 		return 43;
 	}
 	return 1;
 }
 
-int clicker_sniffer::search_responses(clicker_packet* packet)
+int clicker_sniffer::search_responses(clicker_packet_sptr packet)
 {
 	list<clicker_packet>::iterator i;
 	for(i=responses.begin(); i != responses.end(); ++i)
