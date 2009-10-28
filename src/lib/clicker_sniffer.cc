@@ -60,12 +60,13 @@ int clicker_sniffer::work(int noutput_items,
 	if (in[0] & (char)0x02)
 	{
 		clicker_packet_sptr packet = clicker_make_packet(in, 43);
-		search_responses(packet);
+		//search_responses(packet);
 		return 43;
 	}
 	return 1;
 }
 
+/*
 int clicker_sniffer::search_responses(clicker_packet_sptr packet)
 {
 	list<clicker_packet>::iterator i;
@@ -80,3 +81,4 @@ int clicker_sniffer::search_responses(clicker_packet_sptr packet)
 	}
 	return 0;
 }
+*/
