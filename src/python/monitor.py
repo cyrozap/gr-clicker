@@ -9,7 +9,6 @@ from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 
 AC = "101100001011000010110000"
-#AC = "1"
 
 
 class my_top_block(gr.top_block):
@@ -27,6 +26,9 @@ class my_top_block(gr.top_block):
 						help="select USRP Rx side A or B (default=A)")
 		parser.add_option("-g", "--gain", type="eng_float", default=None,
 						help="set USRP gain in dB (default is midpoint)")
+		
+		parser.add_option("-s", "--squelch", type="eng_float", default=20,
+						help="set squelch in dB")
 
 		(options, args) = parser.parse_args ()
 
@@ -38,7 +40,7 @@ class my_top_block(gr.top_block):
 		if len(args) != 0:
 			inf_str = args[0]
 
-		squelch = gr.pwr_squelch_cc(70, 0.1, 0, True)
+		squelch = gr.pwr_squelch_cc(float(options.squelch), 0.1, 0, True)
 		demod = gr.quadrature_demod_cf(1.0)
 		#cr = gr.clock_recovery_mm_ff(6.5643, 0.00765625, 0, 0.175, 0.005)
 		cr = gr.clock_recovery_mm_ff(sample_rate/symbol_rate, 0.00765625, 0, 0.175, 0.005)

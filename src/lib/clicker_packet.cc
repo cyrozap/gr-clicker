@@ -49,7 +49,7 @@ clicker_packet::clicker_packet(char* stream, int length)
 		d_id[i] = (stream[i*8]<<7) + (stream[i*8+1]<<6) + (stream[i*8+2]<<5) + (stream[i*8+3] << 4)
 			+ (stream[i*8+4]<<3) + (stream[i*8+5]<<2) + (stream[i*8+6]<<1) + (stream[i*8+7]);
 	}
-	printf("Clicker Packet: %c\n", d_response_code);
+	//printf("Clicker Packet: %c\n", d_response_code);
 }
 
 void clicker_packet::print()

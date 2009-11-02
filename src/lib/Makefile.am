@@ -71,7 +71,7 @@ _clicker_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
 # c++ standard library
 _clicker_la_LIBADD = 			\
 	$(PYTHON_LDFLAGS)		\
-	-lstdc++			
+	-lstdc++	                	
 
 clicker.cc clicker.py: $(LOCAL_IFILES) $(ALL_IFILES)
 	$(SWIG) $(SWIGPYTHONARGS) -module clicker -o clicker.cc $(LOCAL_IFILES)

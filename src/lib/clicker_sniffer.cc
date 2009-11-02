@@ -28,6 +28,7 @@
 #include <gr_io_signature.h>
 #include "clicker_packet.h"
 #include "clicker_sniffer.h"
+#include <ncurses.h>
 
 clicker_sniffer_sptr clicker_make_sniffer()
 {
@@ -39,11 +40,12 @@ clicker_sniffer::clicker_sniffer() : gr_sync_block ("clicker_sniffer",
 	      gr_make_io_signature (0, 0, 0))
 {
 	set_history(43);
+	initscr();
 }
 
 clicker_sniffer::~clicker_sniffer()
 {
-
+	endwin();
 }
 
 int clicker_sniffer::work(int noutput_items,
@@ -60,10 +62,32 @@ int clicker_sniffer::work(int noutput_items,
 	if (in[0] & (char)0x02)
 	{
 		clicker_packet_sptr packet = clicker_make_packet(in, 43);
+		switch(packet->get_response_code())
+		{
+		case 'A':
+			inc_a();
+			break;
+		case 'B':
+			inc_b();
+			break;
+		case 'C':
+			inc_c();
+			break;
+		case 'D':
+			inc_d();
+			break;
+		}
+		print_responses();
 		//search_responses(packet);
 		return 43;
 	}
 	return 1;
+}
+
+void clicker_sniffer::print_responses()
+{
+	printw("A: %d, B: %d, C: %d, D: %d\n", d_a, d_b, d_c, d_d);
+	refresh();
 }
 
 /*

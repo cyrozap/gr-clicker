@@ -43,12 +43,26 @@ private:
 	clicker_sniffer();
 
 	list<clicker_packet> d_responses;
+	
+	int d_a;
+	int d_b;
+	int d_c;
+	int d_d;
 
 public:
 
 	int work (int noutput_items,
 		    gr_vector_const_void_star &input_items,
 		    gr_vector_void_star &output_items);
+	
+	void print();
+
+	void inc_a() { d_a++; };
+	void inc_b() { d_b++; };
+	void inc_c() { d_c++; };
+	void inc_d() { d_d++; };
+
+	void print_responses();
 
 	//int search_responses(clicker_packet_sptr packet);
 
