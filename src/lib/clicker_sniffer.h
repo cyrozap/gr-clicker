@@ -24,7 +24,7 @@
 #ifndef INCLUDED_CLICKER_SNIFFER_H
 #define INCLUDED_CLICKER_SNIFFER_H
 
-#include <list>
+#include <map>
 #include <gr_sync_block.h>
 #include "clicker_packet.h"
 
@@ -42,12 +42,14 @@ private:
 
 	clicker_sniffer();
 
-	list<clicker_packet> d_responses;
+	//list<clicker_packet_sptr> d_responses;
+	map<uint32_t, clicker_packet_sptr> d_responses;
 	
 	int d_a;
 	int d_b;
 	int d_c;
 	int d_d;
+	int d_e;
 
 public:
 
@@ -61,10 +63,11 @@ public:
 	void inc_b() { d_b++; };
 	void inc_c() { d_c++; };
 	void inc_d() { d_d++; };
+	void inc_e() { d_e++; }
 
 	void print_responses();
 
-	//int search_responses(clicker_packet_sptr packet);
+	int search_responses(clicker_packet_sptr packet);
 
 	~clicker_sniffer();
 

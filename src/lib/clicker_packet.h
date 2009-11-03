@@ -25,6 +25,7 @@
 #define INCLUDED_CLICKER_PACKET_H
 
 #include <cstdio>
+#include <stdint.h>
 #include <boost/enable_shared_from_this.hpp>
 
 using namespace std;
@@ -48,7 +49,8 @@ private:
 	clicker_packet(char *stream, int length);
 
 	char d_response_code;
-	char d_id[4];
+	uint32_t d_id;
+	int d_count;
 
 public:
 
@@ -60,11 +62,16 @@ public:
 	static const char D = 0x0E;
 	static const char E = 0x0A;
 
+	static int compare_ids(char* id_1, char* id_2);
+
+	//clicker_packet_sptr &operator=(const clicker_packet_sptr &rhs);
+
 	char get_response_code() { return d_response_code; };
-	char* get_id() { return d_id; };
+	uint32_t get_id() { return d_id; };
+	int get_count() { return d_count; };
 
 	void set_response_code(char response_code) { d_response_code = response_code; };
-
+	void inc_count() { d_count++; };
 	void print();	
 
 	~clicker_packet();

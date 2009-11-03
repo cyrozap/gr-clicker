@@ -45,10 +45,15 @@ clicker_packet::clicker_packet(char* stream, int length)
 		case 0x0E: d_response_code = 'D'; break;
 		case 0x0A: d_response_code = 'E'; break;
 	}
+	for (int i = 0; i < 31; i++) {
+		d_id += (stream[i]<<(30-i));
+	}
+	/*
 	for (int i = 0; i < 4; i++) {
 		d_id[i] = (stream[i*8]<<7) + (stream[i*8+1]<<6) + (stream[i*8+2]<<5) + (stream[i*8+3] << 4)
 			+ (stream[i*8+4]<<3) + (stream[i*8+5]<<2) + (stream[i*8+6]<<1) + (stream[i*8+7]);
 	}
+	*/
 	//printf("Clicker Packet: %c\n", d_response_code);
 }
 
@@ -59,4 +64,20 @@ void clicker_packet::print()
 
 clicker_packet::~clicker_packet() {
 
+}
+
+//clicker_packet_sptr& clicker_packet::operator=(const clicker_packet_sptr &rhs)
+//{
+	//this->set_response_code(rhs.get_response_code());
+	//this->set_id(rhs.get_id());
+	//return *this;
+//}
+
+static int compare_ids(char* id1, char* id2)
+{
+	for(int i = 0; i < 4; i++)
+	{
+		if (id1[i] != id2[i]) return 0;
+	}
+	return 1;
 }

@@ -28,7 +28,8 @@
 #include <gr_io_signature.h>
 #include "clicker_packet.h"
 #include "clicker_sniffer.h"
-#include <ncurses.h>
+//#include <ncurses.h>
+#include <iostream>
 
 clicker_sniffer_sptr clicker_make_sniffer()
 {
@@ -40,12 +41,12 @@ clicker_sniffer::clicker_sniffer() : gr_sync_block ("clicker_sniffer",
 	      gr_make_io_signature (0, 0, 0))
 {
 	set_history(43);
-	initscr();
+	//initscr();
 }
 
 clicker_sniffer::~clicker_sniffer()
 {
-	endwin();
+	//endwin();
 }
 
 int clicker_sniffer::work(int noutput_items,
@@ -54,7 +55,7 @@ int clicker_sniffer::work(int noutput_items,
 {
 	//const char *in = (const char *) input_items[0];
 	char* in = (char*) input_items[0];
-	char *out = (char *) output_items[0];
+	//char *out = (char *) output_items[0];
 	//for (int i = 0; i < noutput_items; i++){
 	//	out[i] = in[i] * in[i];
 	//}
@@ -62,7 +63,46 @@ int clicker_sniffer::work(int noutput_items,
 	if (in[0] & (char)0x02)
 	{
 		clicker_packet_sptr packet = clicker_make_packet(in, 43);
-		switch(packet->get_response_code())
+		search_responses(packet);
+		//cout<<(packet->get_response_code())<<endl;
+		print_responses();
+		return 43;
+	}
+	return 1;
+}
+
+void clicker_sniffer::print_responses()
+{
+	float mult = 100/(d_a + d_b + d_c + d_d + d_e);
+	printf("Registered IDs: %d A: %4.2f, B: %4.2f, C: %4.2f, D: %4.2f, E: %4.2f\n", d_responses.size(), d_a*mult, d_b*mult, d_c*mult, d_d*mult, d_e*mult);
+	//refresh();
+}
+
+int clicker_sniffer::search_responses(clicker_packet_sptr packet)
+{
+	int resp = 0;
+	
+	d_a = 0;
+	d_b = 0;
+	d_c = 0;
+	d_d = 0;
+	d_e = 0;
+
+	uint32_t id = packet->get_id();
+	if (!d_responses[id])
+		d_responses[id] = packet;
+	else
+	{
+		d_responses[id]->inc_count();
+		d_responses[id]->set_response_code(packet->get_response_code());
+	}
+
+	map<uint32_t, clicker_packet_sptr>::iterator i;
+	for(i=d_responses.begin(); i != d_responses.end(); ++i)
+	{
+		if(i->second->get_count() < 2) continue;
+		
+		switch(i->second->get_response_code())
 		{
 		case 'A':
 			inc_a();
@@ -76,33 +116,11 @@ int clicker_sniffer::work(int noutput_items,
 		case 'D':
 			inc_d();
 			break;
-		}
-		print_responses();
-		//search_responses(packet);
-		return 43;
-	}
-	return 1;
-}
-
-void clicker_sniffer::print_responses()
-{
-	printw("A: %d, B: %d, C: %d, D: %d\n", d_a, d_b, d_c, d_d);
-	refresh();
-}
-
-/*
-int clicker_sniffer::search_responses(clicker_packet_sptr packet)
-{
-	list<clicker_packet>::iterator i;
-	for(i=responses.begin(); i != responses.end(); ++i)
-	{
-		// need to implement compare_ids
-		if(clicker_packet.compare_ids(packet->get_id(), i.get_id()))
-		{
-			i.set_response_code(packet->get_id());
-			return 1;
+		case 'E':
+			inc_e();
+			break;
 		}
 	}
-	return 0;
+	
+	return resp;
 }
-*/
